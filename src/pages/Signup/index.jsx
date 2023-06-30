@@ -13,7 +13,7 @@ const Signup = () => {
   const [touched, setTouched] = useState({});
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const validate = (values) => {
     const errors = {};
     const regex =
@@ -93,14 +93,13 @@ const navigate = useNavigate()
         });
         console.log("Customer created:", response.data);
         toast.success("Customer created");
-         setTimeout(() => {
-            navigate("/login")
+        setTimeout(() => {
+          navigate("/login");
 
-            setFormValues({});
-            setFormErrors({});
-            event.target.reset();
-          }, 2000); // 2-second delay (adjust as needed)
-       
+          setFormValues({});
+          setFormErrors({});
+          event.target.reset();
+        }, 2000); // 2-second delay (adjust as needed)
       } catch (error) {
         console.error("Error creating customer:", error);
         toast.error("error creating customer", error.response);
