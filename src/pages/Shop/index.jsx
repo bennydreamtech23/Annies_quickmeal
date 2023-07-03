@@ -1,11 +1,14 @@
 import Layout from "../../Components/layout/Layout";
 import Products from "../../Components/Products";
+import React, {useContext } from "react";
+import { MenuContext } from "../../contexts/MenuContext";
 
-const Shop = ({ showSidebar}) => {
+const Shop = (props) => {
+  const { isMenuOpen } = useContext(MenuContext);
   return (
     <main>
       <Layout>
-        <Products showSidebar={showSidebar} />
+        <Products showSidebar={isMenuOpen} />
       </Layout>
     </main>
   );

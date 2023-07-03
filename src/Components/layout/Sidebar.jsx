@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { defaultNavItems } from "./defaultNavItems";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
+import { MenuContext } from "../../contexts/MenuContext";
 
 const Sidebar = ({
   logo,
@@ -16,6 +17,15 @@ const Sidebar = ({
   const Icon = collapsed ? BsChevronRight : BsChevronLeft;
   const { siteLogoUrl, siteTitle, siteDescription } = header || {};
   const username = localStorage.getItem("username");
+   const { isMenuOpen, toggleMenu } = useContext(MenuContext);
+
+   const handleMenuButtonClick = () => {
+     //setShowSidebar((prev) => !prev);
+    toggleMenu()
+    setCollapsed(isMenuOpen);
+   
+    console.log(isMenuOpen);
+   };
 
   return (
     <div
@@ -55,7 +65,7 @@ const Sidebar = ({
           )}
           <button
             className="grid place-content-center hover:bg-red-100 hover:text-black w-10 h-10 rounded-full opacity-0 md:opacity-100"
-            onClick={() => setCollapsed(!collapsed)}
+            onClick={handleMenuButtonClick }
           >
             <Icon className="w-5 h-5" />
           </button>
