@@ -97,7 +97,7 @@ const Login = () => {
               history("/admin_dashboard"); // Navigate to shop
             }
 
-    -        setFormValues({});
+            -setFormValues({});
             setFormErrors({});
             event.target.reset();
           }, 2000); // 2-second delay (adjust as needed)
@@ -105,10 +105,9 @@ const Login = () => {
           throw new Error(response);
         }
       } catch (error) {
-        const errorMessage =
-          error.response.message || "An error occurred while logging in.";
+        const errorMessage = error.response;
         toast.error(errorMessage); // Show error toast notification
-        console.log(error.response.message); // Show error toast notification
+        console.log(error.response); // Show error toast notification
       } finally {
         setIsLoading(false);
       }
@@ -190,22 +189,12 @@ const Login = () => {
                 disabled={isButtonDisabled}
               >
                 {isLoading ? (
-                  <div
-                    aria-label="Loading..."
-                    role="status"
-                    className="h-8 w-8"
-                  >
-                    <svg className=" animate-spin" viewBox="3 3 18 18">
-                      <path
-                        className="fill-slate-100"
-                        d="M12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z"
-                      ></path>
-                      <path
-                        className="fill-slate-100"
-                        d="M10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12Z"
-                      ></path>
-                    </svg>
-                  </div>
+                  <img
+                   
+                    width="30"
+                    src="/cart-spinner.gif"
+                    alt="spinner"
+                  />
                 ) : (
                   "Login"
                 )}

@@ -1,10 +1,18 @@
-// cart.jsx
 import { getSession, storeSession } from "./session";
 import { getApiCartConfig } from "./api";
 import axios from "axios";
 import { CART_ENDPOINT } from "../constants/endpoints";
 import { isEmpty, isArray } from "lodash";
 
+/**
+ * Add To Cart Request Handler.
+ *
+ * @param {int} productId Product Id.
+ * @param {int} qty Product Quantity.
+ * @param {Function} setCart Sets The New Cart Value
+ * @param {Function} setIsAddedToCart Sets A Boolean Value If Product Is Added To Cart.
+ * @param {Function} setLoading Sets A Boolean Value For Loading State.
+ */
 export const addToCart = (
   productId,
   qty = 1,
@@ -29,15 +37,13 @@ export const addToCart = (
     .then((res) => {
       if (isEmpty(storedSession)) {
         storeSession(res?.headers?.["x-wc-session"]);
-        console.log("res", res); // Debug statement
       }
       setIsAddedToCart(true);
       setLoading(false);
       viewCart(setCart);
-      // Handle success case
     })
     .catch((err) => {
-      console.log("Error:", err);
+      console.log("err", err);
     });
 };
 
@@ -73,7 +79,7 @@ export const updateCart = (cartKey, qty = 1, setCart, setUpdatingProduct) => {
 
   axios
     .put(
-      `${CART_ENDPOINT}$ {cartKey}`,
+      `${CART_ENDPOINT}${cartKey}`,
       {
         quantity: qty,
       },

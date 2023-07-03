@@ -3,7 +3,8 @@ import { axiosClient, oauth, baseURL, siteUploadFolder } from "../../api";
 import ProductCard from "../Product";
 import "../../styles/product.scss";
 
-function Products() {
+function Products({ showSidebar }) {
+  console.log(showSidebar)
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +29,7 @@ function Products() {
       }
 
       const url = `${baseURL}/products?${queryParams}`;
-      console.log(url)
+      console.log(url);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const { data, headers } = await axiosClient.get(url, {
         params: oauth.authorize({ url, method: "GET" }),
@@ -104,11 +105,11 @@ function Products() {
     <main className="container mx-auto py-8">
       {loading ? (
         <div className="flex items-center justify-center w-100 h-100 mx-auto pt-48">
-          <div className="w-8 h-8 border-t-4 border-b-4 border-red-700 rounded-full animate-spin"></div>
+          <img width="100" src="/cart-spinner.gif" alt="spinner" />
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center">
-          <div className="bg-red-50 w-full p-5 flex justify-between items-center rounded-l border-0">
+        <div className="flex flex-col items-center justify-center ml-3 mr-3">
+          <div className="bg-red-900  p-5 flex justify-between items-center rounded-l border-0 container">
             <div className="flex items-center">
               {categories.length > 0 && (
                 <select
@@ -141,7 +142,13 @@ function Products() {
           </div>
           <div>
             {searchResults.length > 0 ? (
-              <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 mt-3 px-6 py-5 mb-3 gap-20">
+              <div
+                className={`grid ${
+                  showSidebar === true
+                    ? "lg:grid-cols-2"
+                    : "grid-cols-1 lg:grid-cols-3 md:grid-cols-2"
+                } mt-3 px-6 py-5 mb-3 gap-20`}
+              >
                 {searchResults.map((product) => (
                   <ProductCard
                     product={product}

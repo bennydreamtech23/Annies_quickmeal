@@ -13,8 +13,8 @@ const AddToCart = ({ product }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //console.log("addToCart called with productId:", product);
- // console.log("setCart function:", setCart);
+  console.log("addToCart called with productId:", product);
+  console.log("setCart function:", setCart);
 
   const addToCartBtnClasses = cx(
     "duration-500 font-semibold py-2 px-4 border rounded-3xl shadow",
@@ -28,8 +28,6 @@ const AddToCart = ({ product }) => {
     return <h1>No Product</h1>;
   }
 
-  
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -38,18 +36,31 @@ const AddToCart = ({ product }) => {
     setIsModalOpen(false);
   };
 
+  const addFirstProduct = () => {
+    console.log(cart);
+  };
+  //function to add to cart function
+  const handleAddToCartClick = async () => {
+    let existingCart = localStorage.getItem("woo-cart");
+    if (existingCart) {
+      console.log("cart");
+    } else {
+      const newCart = addFirstProduct(product);
+      setCart(newCart);
+    }
+  };
+
   return (
     <div className="flex items-center gap-3">
       <button
         className={addToCartBtnClasses}
-        onClick={() =>
-          addToCart(product?.id ?? 0, 1, setCart, setIsAddedToCart, setLoading)
-        }
+        onClick={handleAddToCartClick}
         disabled={loading}
       >
         {loading ? "Adding.." : <BsFillCartPlusFill />}
       </button>
-      {isAddedToCart && !loading ? (
+      {/*
+    {isAddedToCart && !loading ? (
         <button
           onClick={openModal}
           className="bg-red-700 text-white hover:bg-red-500 font-semibold py-2 px-4 border border-red-400 rounded-3xl shadow text-base"
@@ -57,8 +68,10 @@ const AddToCart = ({ product }) => {
           View cart
         </button>
       ) : null}
+*/}
       {/* Offcanvas modal */}
-      <CartModal isOpen={isModalOpen} onClose={closeModal} />
+ {/* <CartModal isOpen={isModalOpen} onClose={closeModal} />
+*/}
     </div>
   );
 };

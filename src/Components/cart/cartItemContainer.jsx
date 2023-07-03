@@ -5,7 +5,7 @@ import "../../styles/cart.scss";
 import { Link } from "react-router-dom";
 import { clearCart } from "../../utils/cart";
 
-const CartItemsContainer = () => {
+const CartItemsContainer = ({ onClose }) => {
   const [cart, setCart] = useContext(AppContext);
   const { cartItems, totalPrice, totalQty } = cart || {};
   const [isClearCartProcessing, setClearCartProcessing] = useState(false);
@@ -18,7 +18,10 @@ const CartItemsContainer = () => {
     }
     await clearCart(setCart, setClearCartProcessing);
   };
-
+  //handle close modal
+  const closeModal = () => {
+    onClose(false);
+  };
   return (
     <div>
       {cart ? (
@@ -40,7 +43,7 @@ const CartItemsContainer = () => {
           <div className="lg:col-span-1 p-5 pt-0">
             <h2>Cart Total</h2>
             <div className="flex grid grid-cols-3 bg-red-50 mb-4">
-              <p className="col-span-2 p-2 mb-0">Total({totalQty})</p>
+              <p className="col-span-2 p-2 mb-0">Total {totalQty}</p>
               <p className="col-span-1 p-2 mb-0">
                 {cartItems?.[0]?.currency ?? ""}
                 {totalPrice}
@@ -63,26 +66,26 @@ const CartItemsContainer = () => {
               {/*Checkout*/}
               <Link to="/checkout">
                 <button className="text-white duration-500 bg-red-700 hover:bg-red-500 focus:ring-4 focus:text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900">
-                  <span className="woo-next-cart-checkout-txt">
+                 
                     Proceed to Checkout
-                  </span>
-                  <i className="fas fa-long-arrow-alt-right" />
+                
+                  
                 </button>
               </Link>
             </div>
           </div>
         </div>
       ) : (
-        <div className="mt-14">
+        <div className=" px-3 py-2">
           <h2>No items in the cart</h2>
-          <Link to="/shop">
-            <button className="text-white duration-500 bg-red-700 hover:bg-red-00 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900">
-              <span className="woo-next-cart-checkout-txt">
-                Add New Products
-              </span>
-              <i className="fas fa-long-arrow-alt-right" />
+          <div className="mt-3">
+            <button
+              className="text-white duration-500 bg-red-700 hover:bg-red-00 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:focus:ring-yellow-900"
+              onClick={closeModal}
+            >
+              Add New Products
             </button>
-          </Link>
+          </div>
         </div>
       )}
     </div>

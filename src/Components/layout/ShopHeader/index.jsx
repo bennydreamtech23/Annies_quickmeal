@@ -1,171 +1,37 @@
-import React, { useState, useEffect, useContext } from "react";
-import { AppContext } from "../../context";
-import logo from "../../../assets/logo.jpg";
-import { Helmet } from "react-helmet";
-import { NavLink, useNavigate } from "react-router-dom";
-import { BsPersonCircle, BsFillCartPlusFill } from "react-icons/bs";
-import { AiOutlineLogout } from "react-icons/ai";
-import { HEADER_FOOTER_ENDPOINT } from "../../../utils/constants/endpoints";
-import CartModal from "../../CartModal";
+import React from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
+import classNames from "classnames";
 
-const ShopHeader = () => {
-  const [cart, setCart] = useContext(AppContext);
-  const [header, setHeader] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const url = HEADER_FOOTER_ENDPOINT;
-  const history = useNavigate();
-  const fetchInfo = () => {
-    return fetch(url)
-      .then((res) => res.json())
-      .then((data) => setHeader(data?.data?.header || {}));
-  };
-
-  useEffect(() => {
-    fetchInfo();
-  }, [fetchInfo]);
-
+const Navbar = ({ header, onMenuButtonClick, logo }) => {
   const { siteLogoUrl, siteTitle, siteDescription, favicon } = header || {};
-
-  //cartModal function
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  //logout
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    history("/");
-  };
   return (
-    <header>
-      <Helmet>
-        <title>{siteTitle || "AnniesQuickMeal"}</title>
-        <meta name="keywords" content="HTML,CSS,JavaScript" />
-        <meta name="description" content={siteDescription} />
-        <link rel="icon" type="image/svg+xml" href={favicon || logo} />
-      </Helmet>
-
-      <div className="bg-black text-white">
-        <nav className="flex items-center justify-between flex-wrap  container mx-auto py-5 px-5 lg:px-0">
-          <div className="flex items-center flex-shrink-0 text-white">
-            <img
-              src={siteLogoUrl || logo}
-              className="w-100 h-10 mr-3"
-              alt={siteTitle}
-            />
-            <div>
-              <h1 className="font-medium lg:text-xl text-lg">
-                {siteTitle || "AnniesQuickMeal"}
-              </h1>
-              <p className="text-gray-400 tracking-tight">
-                {siteDescription || "I love Cooking"}
-              </p>
-            </div>
-          </div>
-
-          <div className="block lg:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center px-3 py-2 rounded text-white hover:text-red-400 "
-            >
-              <svg
-                className={`fill-current h-5 w-5 ${
-                  isOpen ? "hidden" : "block"
-                }`}
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-              </svg>
-              <svg
-                className={`fill-current h-5 w-5 ${
-                  isOpen ? "block" : "hidden"
-                }`}
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z" />
-              </svg>
-            </button>
-          </div>
-          <div
-            className={`w-full block flex-grow lg:flex lg:items-center lg:w-auto ${
-              isOpen ? "block" : "hidden"
-            }`}
-          >
-            <div className="text-sm flex flex-col lg:flex-row lg:justify-center lg:align-center lg:flex-grow">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto"
-                    : " font-medium xl:mr-3 lg:mr-3 px-2 py-2 hover:bg-red-800 hover:rounded-lg w-24 text-center lg:mt-0 mb-3 lg:w-auto"
-                }
-              >
-                HOME
-              </NavLink>
-              <NavLink
-                to="/services"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto"
-                    : " font-medium xl:mr-3 lg:mr-3 px-2 py-2 hover:bg-red-800 hover:rounded-lg w-24 text-center lg:mt-0 mb-3 lg:w-auto"
-                }
-              >
-                SERVICES
-              </NavLink>
-              <NavLink
-                to="/order"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto"
-                    : " font-medium xl:mr-3 lg:mr-3 px-2 py-2 hover:bg-red-800 hover:rounded-lg w-24 text-center lg:mt-0 mb-3 lg:w-auto"
-                }
-              >
-                ORDERS
-              </NavLink>
-              <NavLink
-                to="/return"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto"
-                    : " font-medium xl:mr-3 lg:mr-3 px-2 py-2 hover:bg-red-800 hover:rounded-lg w-24 text-center lg:mt-0 mb-3 lg:w-auto"
-                }
-              >
-                RETURN
-              </NavLink>
-            </div>
-            <div className="flex flex-col lg:flex-row gap-2">
-              <button className="inline-flex items-center bg-red-700 rounded-3xl border-0 py-2 px-4 text-white font-medium hover:bg-red-500">
-                <BsPersonCircle />
-              </button>
-              <button
-                className="inline-flex items-center bg-red-700 rounded-3xl border-0 py-2 px-4 text-white font-medium hover:bg-red-500"
-                onClick={openModal}
-              >
-                <BsFillCartPlusFill />
-                <span className="ml-1  -mt-1 text-sm text-gray-200">
-                  {cart?.totalQty ? `${cart.totalQty}` : null}
-                </span>
-              </button>
-              <button
-                className="inline-flex items-center bg-red-700 rounded-3xl border-0 py-2 px-4 text-white font-medium hover:bg-red-500"
-                onClick={(e) => handleLogout(e)}
-              >
-                <AiOutlineLogout />
-              </button>
-            </div>
-          </div>
-        </nav>
+    <nav
+      className={classNames({
+        "bg-white text-zinc-500": true, // colors
+        "flex items-center": true, // layout
+        "w-screen md:w-full sticky z-10 px-4 shadow-sm h-[73px] top-0 ": true, //positioning & styling
+      })}
+    >
+      <div className="flex gap-3">
+        <img
+          className="whitespace-nowrap w-14 h-14"
+          src={siteLogoUrl || logo}
+        />
+        <div>
+          <h1 className="font-medium lg:text-lg text-md text-black">
+            {siteTitle || "AnniesQuickMeal"}
+          </h1>
+          <p className="text-gray-500 tracking-tight text-sm">
+            {siteDescription || "I love Cooking"}
+          </p>
+        </div>
       </div>
-      <CartModal isOpen={isModalOpen} onClose={closeModal} />
-    </header>
+      <div className="flex-grow"></div>
+      <button className="md:hidden block lg:hidden" onClick={onMenuButtonClick}>
+        <GiHamburgerMenu className="text-3xl" />
+      </button>
+    </nav>
   );
 };
 
-export default ShopHeader;
+export default Navbar;

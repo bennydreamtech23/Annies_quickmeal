@@ -18,7 +18,7 @@ const Footer = () => {
   //const { socialLinks,  } =
   //  header || {};
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-gray-50 text-black">
       <div className="container mx-auto py-6 px-5 lg:px-0">
         <div className="flex flex-wrap -mx-3 overflow-hidden ">
           <div className="mt-4 mb-8 px-3 w-full overflow-hidden sm:w-1/2 md:w-1/3 xl:w-1/4">
@@ -36,10 +36,9 @@ const Footer = () => {
             <h5>name</h5>
             <p>description</p>
           </div>
-          
         </div>
       </div>
-      <div className="bg-red-700 text-center p-2">
+      <div className="bg-red-900 text-center p-2 text-white">
         <p>@anniesfoodies.com</p>
       </div>
     </footer>

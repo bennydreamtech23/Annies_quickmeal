@@ -1,22 +1,20 @@
-import { HEADER_FOOTER_ENDPOINT } from "../../../utils/constants/endpoints";
+import React, { useState, useEffect, useContext } from "react";
+import { AppContext } from "../../context";
 import logo from "../../../assets/logo.jpg";
-import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { NavLink, useNavigate } from "react-router-dom";
-const Header = () => {
+import { BsPersonCircle, BsFillCartPlusFill } from "react-icons/bs";
+import { AiOutlineLogout } from "react-icons/ai";
+import { HEADER_FOOTER_ENDPOINT } from "../../../utils/constants/endpoints";
+import CartModal from "../../CartModal";
+
+const ShopHeader = () => {
+  const [cart, setCart] = useContext(AppContext);
   const [header, setHeader] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const url = HEADER_FOOTER_ENDPOINT;
-  const navigate = useNavigate();
-
-  const shopLink = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/shop");
-    } else {
-      navigate("/login");
-    }
-  };
+  const history = useNavigate();
   const fetchInfo = () => {
     return fetch(url)
       .then((res) => res.json())
@@ -25,10 +23,24 @@ const Header = () => {
 
   useEffect(() => {
     fetchInfo();
-  }, []);
+  }, [fetchInfo]);
 
   const { siteLogoUrl, siteTitle, siteDescription, favicon } = header || {};
 
+  //cartModal function
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  //logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    history("/");
+  };
   return (
     <header>
       <Helmet>
@@ -38,21 +50,18 @@ const Header = () => {
         <link rel="icon" type="image/svg+xml" href={favicon || logo} />
       </Helmet>
 
-      <div className="bg-gray-50 text-black">
+      <div className="bg-gray-50  text-black shadow shadow-gray-300">
         <nav className="flex items-center justify-between flex-wrap  container mx-auto py-5 px-5 lg:px-0">
-          <div className="flex items-center flex-shrink-0 text-white">
+          <div className="flex items-center flex-shrink-0 text-black">
             <img
               src={siteLogoUrl || logo}
               className="w-100 h-10 mr-3"
               alt={siteTitle}
             />
             <div>
-              <NavLink
-                to="/"
-                className="font-medium lg:text-xl text-lg text-black"
-              >
+              <h1 className="font-medium lg:text-xl text-lg">
                 {siteTitle || "AnniesQuickMeal"}
-              </NavLink>
+              </h1>
               <p className="text-gray-500 tracking-tight text-sm">
                 {siteDescription || "I love Cooking"}
               </p>
@@ -89,71 +98,76 @@ const Header = () => {
               isOpen ? "block" : "hidden"
             }`}
           >
-            <div className="text-sm flex flex-col lg:flex-row lg:justify-center lg:align-center lg:flex-grow lg:mt-0 mt-8">
+            <div className="text-sm flex flex-col lg:flex-row lg:justify-center lg:align-center lg:flex-grow">
               <NavLink
                 to="/"
                 className={({ isActive }) =>
                   isActive
-                    ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto w-24"
+                    ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto"
                     : " font-medium xl:mr-3 lg:mr-3 px-2 py-2 hover:bg-red-800 hover:rounded-lg w-24 text-center lg:mt-0 mb-3 lg:w-auto"
                 }
               >
                 HOME
               </NavLink>
               <NavLink
-                to="/contact"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto mt-2 lg:mt-0"
-                    : " font-medium xl:mr-3 lg:mr-3 px-2 py-2 hover:bg-red-800 hover:rounded-lg w-24 text-center lg:mt-0 mb-3 lg:w-auto mt-2 lg:mt-0"
-                }
-              >
-                CONTACT
-              </NavLink>
-              <NavLink
-                to="/about"
+                to="/services"
                 className={({ isActive }) =>
                   isActive
                     ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto"
                     : " font-medium xl:mr-3 lg:mr-3 px-2 py-2 hover:bg-red-800 hover:rounded-lg w-24 text-center lg:mt-0 mb-3 lg:w-auto"
                 }
               >
-                ABOUT
+                SERVICES
               </NavLink>
               <NavLink
-                to="/blog"
+                to="/order"
                 className={({ isActive }) =>
                   isActive
                     ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto"
                     : " font-medium xl:mr-3 lg:mr-3 px-2 py-2 hover:bg-red-800 hover:rounded-lg w-24 text-center lg:mt-0 mb-3 lg:w-auto"
                 }
               >
-                BLOG
+                ORDERS
               </NavLink>
               <NavLink
-                to="/gallery"
+                to="/return"
                 className={({ isActive }) =>
                   isActive
                     ? "text-white font-bold bg-red-800 rounded-lg px-2 py-2  xl:mr-3 lg:mr-3 lg:w-auto"
                     : " font-medium xl:mr-3 lg:mr-3 px-2 py-2 hover:bg-red-800 hover:rounded-lg w-24 text-center lg:mt-0 mb-3 lg:w-auto"
                 }
               >
-                GALLERY
+                RETURN
               </NavLink>
             </div>
-            <div>
+            <div className="flex flex-col lg:flex-row gap-2">
+              <button className="inline-flex items-center bg-red-700 rounded-3xl border-0 py-2 px-4 text-white font-medium hover:bg-red-500">
+                <BsPersonCircle />
+              </button>
               <button
-                className="inline-flex items-center bg-red-800 rounded-3xl border-0 py-2 px-4 text-white font-medium hover:bg-red-500"
-                onClick={(e) => shopLink(e)}
+                className="inline-flex items-center bg-red-700 rounded-3xl border-0 py-2 px-4 text-white font-medium hover:bg-red-500"
+                //    onClick={openModal}
               >
-                Shop
+                <BsFillCartPlusFill />
+                <span className="ml-1  -mt-1 text-sm text-gray-200">
+                  {cart?.totalQty ? `${cart.totalQty}` : null}
+                </span>
+              </button>
+              <button
+                className="inline-flex items-center bg-red-700 rounded-3xl border-0 py-2 px-4 text-white font-medium hover:bg-red-500"
+                onClick={(e) => handleLogout(e)}
+              >
+                <AiOutlineLogout />
               </button>
             </div>
           </div>
         </nav>
       </div>
+      {/*
+      <CartModal isOpen={isModalOpen} onClose={closeModal} /> 
+      */}
     </header>
   );
 };
 
-export default Header;
+export default ShopHeader;

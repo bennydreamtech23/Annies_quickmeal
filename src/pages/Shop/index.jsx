@@ -1,11 +1,12 @@
-import Header from "../../Components/layout/ShopHeader";
+import Layout from "../../Components/layout/Layout";
 import Products from "../../Components/Products";
 
-const Shop = () => {
+const Shop = ({ showSidebar}) => {
   return (
     <main>
-      <Header />
-      <Products/>
+      <Layout>
+        <Products showSidebar={showSidebar} />
+      </Layout>
     </main>
   );
 };

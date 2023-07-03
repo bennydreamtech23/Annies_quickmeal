@@ -51,7 +51,7 @@ const CartModal = ({ isOpen, onClose }) => {
             {/* Modal content */}
             <div className="mt-6 relative flex-1 px-4 sm:px-6">
               <div className="absolute inset-0 px-4 sm:px-6 overflow-y-auto">
-                <CartContainer />
+                <CartContainer onClose={onClose}/>
               </div>
             </div>
           </div>
